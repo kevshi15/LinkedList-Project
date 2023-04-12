@@ -1,8 +1,23 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+//-----------------------------------------------------
+//Assignment 4
+//Written by: Kevin Shibu Chacko 40241154 & Andrew Harissi Dagher 40247726 
+//
+//-----------------------------------------------------
 
+/**
+* 
+* @author Kevin Shibu Chacko
+* @author Andrew Harissi Dagher
+* This class represents the driver program for managing a list of Book objects.
+*
+*/
 public class Driver {
-
+	/**
+	 * The main method of the program.
+	 * @param args The command line arguments.
+	 */
 	public static void main(String[] args) {
 		Scanner sc=new Scanner(System.in);
 		int input=0;
@@ -115,7 +130,7 @@ public class Driver {
 			    Book b=new Book(title,author,price,isbn3,genre,year);
 			    boolean check=bkLst.insertBetween(isbn1,isbn2, b);
 			    if(check==false) {
-			    	System.out.println("Could not locate two consecutive ISBN numbers that you entered");
+			    	System.out.println("Could not locate the two consecutive ISBN numbers that you entered");
 			    	System.out.println();
 			    }
 			    else {

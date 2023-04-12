@@ -5,17 +5,44 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
+//-----------------------------------------------------
+//Assignment 4
+//Written by: Kevin Shibu Chacko 40241154 & Andrew Harissi Dagher 40247726 
+//
+//-----------------------------------------------------
+
+/**
+* 
+* @author Kevin Shibu Chacko
+* @author Andrew Harissi Dagher
+* Class defines a BookList class with various methods to manipulate a linked list of Book objects. 
+*
+*/
+/**
+ * A linked list of Book objects.
+ */
 public class BookList {
 	
-	
+	 /**
+     * A node in the linked list.
+     */
 	private class Node{
 		private Book b;
 		private Node next;
-		
+	/**
+    * Constructs a new Node with null values.
+    */
 		public Node() {
 			b=null;
 			next=null;
 		}
+		 /**
+         * Constructs a new Node with the specified Book and next Node.
+         *
+         * @param b The Book to store in the Node.
+         * @param link The next Node in the list.
+         */
 		public Node(Book b,Node link) {
 			this.b=b;
 			next=link;
@@ -24,9 +51,18 @@ public class BookList {
 	
 	private Node head;
 	
+	/**
+     * Constructs a new empty BookList.
+     */
 	public BookList() {
 		head=null;
 	}
+	 /**
+     * Reads Book objects from a file and separates out the ones with a publication year after 2023.
+     * The invalid Books are stored in an ArrayList for later processing.
+     *
+     * @param incRec An ArrayList to store invalid Books in.
+     */
 	public void IncorrectRecords(ArrayList<Book> incRec) {
 		Scanner sc=null;
 		PrintWriter pw=null;
@@ -60,7 +96,11 @@ public class BookList {
 		}
 		System.out.println("YearError File Created");
 	}
-	
+	 /**
+     * Adds a Book to the start of the list.
+     *
+     * @param b The Book to add to the list.
+     */
 	public void addToStart(Book b) {
 	    Node n = new Node(b, head);
 	    if (head == null) {
@@ -75,6 +115,11 @@ public class BookList {
 	        head = n; 
 	    }
 	}
+	 /**
+     * Adds a Book to the end of the list.
+     *
+     * @param b The Book to add to the list.
+     */
 	public void addAtEnd(Book b) {
 	    if (head == null) {
 	        Node n = new Node(b, null);
@@ -88,6 +133,11 @@ public class BookList {
 	        temp.next = new Node(b, head);
 	    }
 	}
+	 /**
+     * Stores all Books from a given year in a file named with the year.
+     *
+     * @param yr The year to extract Books from.
+     */
 	public void storeRecordsByYear(int yr) {
 	    String str = Integer.toString(yr) + ".txt";
 	    PrintWriter pw = null;
@@ -117,9 +167,16 @@ public class BookList {
     
 	}
 
-	
+	/**
+	Inserts a new book before the book with the given ISBN.
+	@param isbn the ISBN of the book before which the new book will be inserted
+	@param b the new book to be inserted
+	@return true if the new book is successfully inserted; false otherwise
+	*/
 	public boolean insertBefore(long isbn, Book b) {
-		
+		if (head == null) {
+	        return false;
+	    }
 		if(head.b.getIsbn()==isbn) {
 			head = new Node(b, head);  
 			return true;
@@ -136,9 +193,19 @@ public class BookList {
 			temp.next = new Node(b, temp.next);	
 			return true;
 	}
+	/**
+	Inserts a new book between two books with the given ISBNs.
+	@param isbn1 the ISBN of the book before which the new book will be inserted
+	@param isbn2 the ISBN of the book after which the new book will be inserted
+	@param b the new book to be inserted
+	@return true if the new book is successfully inserted; false otherwise
+	*/
 	public boolean insertBetween(long isbn1, long isbn2, Book b) {
+		if (head == null) {
+	        return false;
+	    }
 	    if (head.b.getIsbn() == isbn1 && head.next.b.getIsbn() == isbn2) {
-	        head = new Node(b, head.next);
+	        head.next= new Node(b, head.next);
 	        return true;
 	    } else {
 	        Node temp = head.next;
@@ -152,7 +219,14 @@ public class BookList {
 	        return true;
 	    }
 	}
+	/**
+	Deletes consecutive repeated records from the list.
+	@return true if any consecutive repeated records are found and deleted; false otherwise
+	*/
 	public boolean delConsecutiveRepeatedRecords() {
+		if (head == null) {
+	        return false;
+	    }
 	    Node temp1 = head;
 	    Node temp2 = head.next;
 	    boolean ans = false;
@@ -184,8 +258,15 @@ public class BookList {
 	    }
 	    return ans;
 	}
-      
+	/**
+	Extracts a new book list that contains all the books with the given author.
+	@param aut the author of the books to be extracted
+	@return a new BookList object containing all the books with the given author; null if no books are found
+	*/
 	public BookList extractAuthList(String aut) {
+		if (head == null) {
+	        return null;
+	    }
 		BookList b1=new BookList();
 		if(head.b.getAuthor().equals(aut)) {
 			b1.addAtEnd(head.b);
@@ -202,7 +283,16 @@ public class BookList {
 		}
 		return b1;
 	}
+	/**
+	Swaps the positions of two books with the given ISBNs.
+	@param isbn1 the ISBN of the first book to be swapped
+	@param isbn2 the ISBN of the second book to be swapped
+	@return true if the books are successfully swapped; false otherwise
+	*/
 	public boolean swap(long isbn1, long isbn2) {
+		if (head == null) {
+	        return false;
+	    }
 		Node temp1=head;
 		Node temp2=head.next;
 		while(temp1.b.getIsbn()!=isbn1) {
@@ -222,6 +312,9 @@ public class BookList {
 		temp2.b=temp3;
 		return true;
 	}
+	/**
+	Writes the current state of the book list to a file named "Update_Books.txt".
+	*/
 	public void commit() {
 		Node temp=head;
 		PrintWriter pw = null;
@@ -236,7 +329,9 @@ public class BookList {
 		}
 		pw.close();
 	}
-	
+	/**
+	Displays the content of the book list on the console.
+	*/
 	public void displayContent() {
 	    Node temp = head;
 	    do {
